@@ -23,7 +23,7 @@ A terminal-based user interface (TUI) for managing SSH connections, inspired by 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/ssh-tui-manager.git
+   git clone https://github.com/Thiennguyen21it/ssh-tui-manager.git
    cd ssh-tui-manager
    ```
 
