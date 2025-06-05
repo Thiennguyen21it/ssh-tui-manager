@@ -85,7 +85,8 @@ class SSHManagerApp(App):
         with Container(id="main-container"):
             yield DataTable(id="host-table")
             with Container(id="action-bar"):
-                yield Select(id="group-filter", prompt="Filter by Group")
+                # Initialize Select with default options
+                yield Select([("all", "All Groups")], id="group-filter")
                 yield Button("Add Host", id="add-btn", variant="primary")
                 yield Button("Edit Host", id="edit-btn")
                 yield Button("Delete Host", id="delete-btn", variant="error")
@@ -101,13 +102,19 @@ class SSHManagerApp(App):
         # Initialize the data table
         table = self.query_one("#host-table")
         table.add_columns("Alias", "Host", "User", "Port", "Group", "Description")
-        self.refresh_host_table()
-
-        # Initialize group filter
+        
+        # Set initial group selection
+        self.selected_group = "all"
+        
+        # Initialize group filter and refresh host table
         self.refresh_group_filter()
+        self.refresh_host_table()
         
         # Update status message
         self.update_status("Ready")
+        
+        # Disable buttons initially since no host is selected
+        self.update_button_states()
 
     def refresh_host_table(self) -> None:
         """Refresh the host table with current data."""
@@ -116,7 +123,7 @@ class SSHManagerApp(App):
         
         hosts = (
             self.host_manager.get_hosts_by_group(self.selected_group)
-            if self.selected_group and self.selected_group != "All"
+            if self.selected_group and self.selected_group != "all"
             else self.host_manager.get_all_hosts()
         )
         
@@ -139,15 +146,19 @@ class SSHManagerApp(App):
     def refresh_group_filter(self) -> None:
         """Refresh the group filter dropdown."""
         group_filter = self.query_one("#group-filter")
-        groups = ["All"] + self.host_manager.get_groups()
-        group_filter.options = [(group, group) for group in groups]
         
-        # Set the current selection
-        if self.selected_group and self.selected_group in groups:
-            group_filter.value = self.selected_group
-        else:
-            group_filter.value = "All"
-            self.selected_group = "All"
+        # Get all unique groups
+        groups = self.host_manager.get_groups()
+        
+        # Always include "All" option
+        options = [("all", "All Groups")]
+        
+        # Add other groups if they exist
+        if groups:
+            options.extend([(group, group) for group in groups])
+            
+        # Set the options
+        group_filter.options = options
 
     def update_button_states(self) -> None:
         """Update button states based on selection."""
@@ -175,8 +186,8 @@ class SSHManagerApp(App):
         if result:
             try:
                 self.host_manager.add_host(result)
+                self.refresh_group_filter()  # Refresh groups first
                 self.refresh_host_table()
-                self.refresh_group_filter()
                 self.update_status(f"Host '{result.alias}' added successfully")
             except ValueError as e:
                 self.update_status(f"Error: {str(e)}")
@@ -195,8 +206,8 @@ class SSHManagerApp(App):
             try:
                 self.host_manager.delete_host(original_alias)
                 self.host_manager.add_host(host)
+                self.refresh_group_filter()  # Refresh groups first
                 self.refresh_host_table()
-                self.refresh_group_filter()
                 self.update_status(f"Host '{host.alias}' updated successfully")
             except ValueError as e:
                 self.update_status(f"Error: {str(e)}")
@@ -214,8 +225,8 @@ class SSHManagerApp(App):
             try:
                 alias = self.selected_host.alias
                 self.host_manager.delete_host(alias)
+                self.refresh_group_filter()  # Refresh groups first
                 self.refresh_host_table()
-                self.refresh_group_filter()
                 self.update_status(f"Host '{alias}' deleted successfully")
             except KeyError as e:
                 self.update_status(f"Error: {str(e)}")
@@ -268,8 +279,8 @@ class SSHManagerApp(App):
     def action_refresh(self) -> None:
         """Refresh the host table."""
         self.host_manager.load_hosts()
+        self.refresh_group_filter()  # Refresh groups first
         self.refresh_host_table()
-        self.refresh_group_filter()
         self.update_status("Refreshed host list")
 
     async def action_scp_menu(self) -> None:

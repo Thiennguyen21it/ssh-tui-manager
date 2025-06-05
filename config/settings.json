@@ -1,0 +1,6 @@
+{
+  "default_port": 22,
+  "connection_timeout": 10,
+  "default_key_path": "~/.ssh/id_rsa",
+  "terminal_command": "ssh"
+}
