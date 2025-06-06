@@ -24,7 +24,7 @@ pip install ssh-tui-manager
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/ssh-tui-manager.git
+git clone https://github.com/Thiennguyen21it/ssh-tui-manager.git
 cd ssh-tui-manager
 pip install -e .
 ```
@@ -133,4 +133,8 @@ pytest
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+Thien Nguyen (nguyenhoanthien1312@gmail.com)
