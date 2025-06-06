@@ -15,7 +15,7 @@ A terminal-based user interface (TUI) for managing SSH connections, inspired by 
 
 ## Installation
 
-### From PyPI (recommended)
+### From PyPI (comming soon)
 
 ```bash
 pip install ssh-tui-manager
