@@ -2,6 +2,8 @@
 
 A terminal-based user interface (TUI) for managing SSH connections, inspired by tools like lazygit.
 
+![SSH TUI Manager Screenshot](https://via.placeholder.com/800x450.png?text=SSH+TUI+Manager+Screenshot)
+
 ## Features
 
 - Manage a list of SSH hosts with details (hostname, username, port, etc.)
@@ -13,32 +15,31 @@ A terminal-based user interface (TUI) for managing SSH connections, inspired by 
 
 ## Installation
 
-### Requirements
+### From PyPI (recommended)
 
-- Python 3.8+
-- Required Python packages (see requirements.txt)
+```bash
+pip install ssh-tui-manager
+```
 
-### Setup
+### From Source
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/Thiennguyen21it/ssh-tui-manager.git
-   cd ssh-tui-manager
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Run the application:
-   ```bash
-   python main.py
-   ```
+```bash
+git clone https://github.com/yourusername/ssh-tui-manager.git
+cd ssh-tui-manager
+pip install -e .
+```
 
 ## Usage
+
+### Starting the Application
+
+```bash
+# Run the application
+ssh-tui
+
+# Specify a custom configuration directory
+ssh-tui --config-dir /path/to/config
+```
 
 ### Keyboard Shortcuts
 
@@ -93,7 +94,7 @@ A terminal-based user interface (TUI) for managing SSH connections, inspired by 
 
 ## Configuration
 
-Host data is stored in JSON format in the `config/ssh_hosts.json` file. You can manually edit this file if needed, but it's recommended to use the application interface.
+Host data is stored in JSON format in the `~/.config/ssh-tui-manager/ssh_hosts.json` file. You can manually edit this file if needed, but it's recommended to use the application interface.
 
 ## Development
 
@@ -110,23 +111,18 @@ ssh-tui-manager/
 │   │   ├── __init__.py
 │   │   ├── interface.py        # TUI interface logic (commands, navigation)
 │   │   └── dialogs.py          # Dialog screens for adding/editing hosts
-│   └── utils/
-│       ├── __init__.py
-│       └── helpers.py          # Utility functions (input validation, etc.)
-├── config/
-│   └── ssh_hosts.json          # Stored host data (groups, hosts, aliases, etc.)
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   └── helpers.py          # Utility functions (input validation, etc.)
+│   └── main.py                 # CLI entry point
 ├── tests/
 │   ├── __init__.py
 │   ├── test_ssh_client.py      # Unit tests for SSH connections
 │   ├── test_host_manager.py    # Unit tests for host management
 │   └── test_interface.py       # Unit tests for TUI interactions
-├── docs/
-│   ├── README.md               # Project overview, setup, and usage
-│   ├── CHANGELOG.md            # Version history and changes
-│   └── CONTRIBUTING.md         # Guidelines for contributors
-├── main.py                     # Entry point for the application
-├── requirements.txt            # Project dependencies
-└── .gitignore                  # Git ignore file
+├── main.py                     # Local entry point for development
+├── setup.py                    # Package setup for installation
+└── requirements.txt            # Project dependencies
 ```
 
 ### Running Tests
