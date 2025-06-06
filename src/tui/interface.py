@@ -72,9 +72,10 @@ class SSHManagerApp(App):
         Binding("s", "scp_menu", "SCP"),
     ]
 
-    def __init__(self):
+    def __init__(self, config_dir: str = "config"):
         super().__init__()
-        self.host_manager = HostManager()
+        self.config_dir = config_dir
+        self.host_manager = HostManager(config_dir=config_dir)
         self.ssh_client = SSHClient()
         self.selected_host: Optional[SSHHost] = None
         self.selected_group: Optional[str] = None
